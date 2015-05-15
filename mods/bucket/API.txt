@@ -1,0 +1,17 @@
+Bucket API
+==========
+
+The bucket API allows registering new types of buckets for non-default liquids.
+
+  * `bucket.register_liquid(source_name, flowing_name, bucket_name, bucket_texture, description)`
+	Example:
+	```Lua
+	bucket.register_liquid(
+		"default:lava_source",  -- Source node name
+		"default:lava_flowing", -- Flowing node name
+		"bucket:bucket_lava",   -- Name to be used for bucket
+		"bucket_lava.png",      -- Bucket texture (for wielditem and inventory_image)
+		"Lava Bucket"           -- Bucket description
+	)
+	```
+

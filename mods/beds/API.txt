@@ -1,0 +1,31 @@
+Beds API
+========
+  * `beds.register_bed(name, def)`: See [Bed Definition](#bed-definition).
+  * `beds.read_spawns()`: Returns a table containing player respawn positions.
+  * `beds.kick_players()`: Forces all players to leave their beds.
+  * `beds.skip_night()`: Sets world time to morning and saves respawn position
+	of all players currently sleeping.
+
+Bed Definition
+---------------
+```Lua
+{
+	description = "Simple Bed",
+	inventory_image = "beds_bed.png",
+	wield_image = "beds_bed.png",
+	tiles = {
+	    bottom = [[Tile definition]], -- The tiles of the bottom part of the bed
+	    top = [[Tile definition]],    -- The tiles of the top part of the bed
+	},
+	nodebox = {
+	    bottom = [[Node box]], -- Bottom part of bed
+	    top = [[Node box]],    -- Top part of bed
+	},
+	selectionbox = [[Node box]], -- For both nodeboxes!
+	recipe = {  -- Craft recipe
+		{"group:wool", "group:wool", "group:wool"},
+		{"group:wood", "group:wood", "group:wood"}
+	}
+}
+```
+

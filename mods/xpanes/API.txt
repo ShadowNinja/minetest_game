@@ -1,0 +1,20 @@
+Xpanes API
+==========
+Creates panes that automatically connect to each other
+
+  * `xpanes.register_pane(sub_name, def)`
+    * `sub_name`: Used to generate node name.
+      Result: `"xpanes:sub_name"` and `"xpanes:sub_name_{2..15}"`.
+    * `def`: See [Pane Definition](#pane-definition).
+
+Pane Definition
+----------------
+```Lua
+{
+	-- More tiles aren't supported
+	textures = {"texture_bottom_top", "texture_left_right", "texture_front_back"},
+	recipe = [[Craft recipe]],
+	-- Other node definition fields are also supported
+}
+```
+

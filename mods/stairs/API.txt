@@ -1,0 +1,24 @@
+Stairs API
+----------
+The stairs API lets you register stairs and slabs and ensures that they are
+registered the same way as those included in `minetest_game`, keeping them
+compatible with other mods.
+
+  * `stairs.register_stair(sub_name, recipe_item, groups, images, description,
+    sounds)`: Registers a stair.
+    * `sub_name`: Basically the material name (e.g. cobble) used for the stair name.
+      Nodename pattern: "stairs:stair_subname".
+    * `recipe_item`: Item used in the craft recipe, e.g. "default:cobble".
+    * `groups`: Extra groups that the stair nodes have.
+    * `images`: A tile definition.
+    * `description`: The description field in the stair's definition.
+
+  * `stairs.register_slab(sub_name, recipe_item, groups, images, description,
+    sounds)`: Registers a slab.  Usage is the same as `register_stair`.
+
+  * `stairs.register_stair_and_slab(sub_name, recipe_item, groups, images,
+    desc_stair, desc_slab, sounds)`: A wrapper for `register_stair` and
+    `register_slab`.  Usage is almost the same as `register_stair`, except:
+    * `desc_stair`: Description for stair node.
+    * `desc_slab`: Description for slab node.
+

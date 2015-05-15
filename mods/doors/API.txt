@@ -1,0 +1,50 @@
+Doors API
+---------
+
+The doors mod allows modders to register custom doors and trapdoors.
+
+  * `doors.register_door(name, def)`: See [Door Definition](#door-definition).
+  * `doors.register_trapdoor(name, def)`:
+	See [Trapdoor Definition](#trapdoor-definition).
+
+Door definition
+----------------
+```Lua
+{
+	description = "Door description",
+	inventory_image = "mod_door_inv.png",
+	groups = {group = 1},
+	-- The tiles of the bottom part of the door {front, side}
+	tiles_bottom = [[Tile definition]],
+	-- The tiles of the top part of the door {front, side}
+	tiles_top = [[Tile definition]],
+	node_box_bottom = [[Node box]], -- Optional
+	node_box_top = [[Node box]],  -- Optional
+	selection_box_bottom = [[Node box]], -- Optional
+	selection_box_top = [[Node box]],  -- Optional
+	sound_open_door = [[Name of sound to play when opening door]], -- Optional
+	sound_close_door = [[Name of sound to play when closing door]], -- Optional
+	-- If true, only placer can open the door (locked for others)
+	only_placer_can_open = true / false,
+}
+```
+
+Trapdoor definition
+----------------
+```Lua
+{
+	-- The texture for the front and back of the trapdoor
+	tile_front = "doors_trapdoor.png",
+	-- The tiles of the four side parts of the trapdoor
+	tile_side = "doors_trapdoor_side.png",
+	sound_open = [[Name of sound to play when opening trapdoor]], -- Optional
+	sound_close = [[Name of sound to play when closing trapdoor]], -- Optional
+	--[[
+	You can add any other node definition properties for minetest.register_node,
+	such as wield_image, inventory_image, sounds, groups, description, ...
+	Only node_box, selection_box, tiles, drop, drawtype, paramtype, paramtype2,
+	and on_rightclick will be overwritten by the trapdoor registration function.
+	--]]
+}
+```
+

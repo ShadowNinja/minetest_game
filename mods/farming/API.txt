@@ -1,13 +1,19 @@
-farming.register_hoe(name, hoe definition)
- -> Register a new hoe, see [hoe definition]
- 
-farming.register_plant(name, Plant definition)
- -> Register a new growing plant, see [Plant definition]
+Farming API
+===========
+
+The farming API allows you to easily register plants and hoes.
+
+  * `farming.register\_hoe(name, hoe definition)` Register a new hoe, see
+	[Hoe definition](#hoe-definition).
+  * `farming.register\_plant(name, Plant definition)`: Register a new
+	growing plant, see [Plant definition](#plant-definition).
 
 Hoe Definition
+---------------
+```Lua
 {
 	description = "",	-- Description for tooltip
-	inventory_image = "unknown_item.png",	-- Image to be used as wield- and inventory image
+	inventory_image = "unknown_item.png",	-- Image to be used as wield and inventory images
 	max_uses = 30,	-- Uses until destroyed
 	material = "",	-- Material for recipes
 	recipe = {	-- Craft recipe, if material isn't used
@@ -16,13 +22,18 @@ Hoe Definition
 		{"", "group:stick"},
 	}
 }
+```
 
 Plant definition
+-----------------
+```Lua
 {
 	description = "",	-- Description of seed item
-	inventory_image = "unknown_item.png",	-- Image to be used as seed's wield- and inventory image
+	inventory_image = "unknown_item.png",	-- Image to be used as seed's wield and inventory images
 	steps = 8,	-- How many steps the plant has to grow, until it can be harvested
 	^ Always provide a plant texture for each step, format: modname_plantname_i.png (i = stepnumber)
 	minlight = 13, -- Minimum light to grow
 	maxlight = default.LIGHT_MAX -- Maximum light to grow
 }
+```
+

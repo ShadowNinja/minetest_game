@@ -23,8 +23,8 @@ local function update_pane(pos, name)
 			z = pos.z + dir.z
 		})
 		local def = minetest.registered_nodes[node.name]
-		local pane_num = def and def.groups.pane or 0
-		if pane_num > 0 or not def or (def.walkable ~= false and
+		local is_pane = def and def.groups.pane == 1
+		if is_pane or not def or (def.walkable ~= false and
 				def.drawtype ~= "nodebox") then
 			sum = sum + 2 ^ (i - 1)
 		end
@@ -42,8 +42,7 @@ local function update_nearby(pos, node)
 		return
 	end
 	local underscore_pos = string.find(name, "_[^_]*$") or 0
-	local len = name:len()
-	local num = tonumber(name:sub(underscore_pos+1, len))
+	local num = tonumber(name:sub(underscore_pos + 1))
 	if not num or num < 1 or num > 15 then
 		name = name:sub(8)
 	else
@@ -83,6 +82,8 @@ local sb_full_boxes = {
 }
 
 function xpanes.register_pane(name, def)
+	def.groups = def.groups or {}
+	def.groups.pane = 1
 	for i = 1, 15 do
 		local need = {}
 		local cnt = 0
@@ -114,27 +115,28 @@ function xpanes.register_pane(name, def)
 		if cnt == 1 then
 			texture = def.textures[1].."^"..def.textures[2]
 		end
-		minetest.register_node(":xpanes:"..name.."_"..i, {
-			drawtype = "nodebox",
-			tiles = {def.textures[3], def.textures[3], texture},
-			paramtype = "light",
-			groups = def.groups,
-			drop = "xpanes:"..name,
-			sounds = def.sounds,
-			node_box = {
-				type = "fixed",
-				fixed = take
-			},
-			selection_box = {
-				type = "fixed",
-				fixed = take2
-			}
-		})
+		local d = table.copy(def)
+		d.drawtype = "nodebox"
+		d.paramtype = "light"
+		d.tiles = {def.textures[3], def.textures[3], texture}
+		d.drop = "xpanes:"..name
+		d.groups.not_in_creative_inventory = 1
+		d.node_box = {
+			type = "fixed",
+			fixed = take,
+		}
+		d.selection_box = {
+			type = "fixed",
+			fixed = take2
+		}
+		minetest.register_node(":xpanes:"..name.."_"..i, d)
 	end
 
-	def.on_construct = function(pos)
+	function def.on_construct(pos)
 		update_pane(pos, name)
 	end
+
+	def.node_placement_prediction = ""
 
 	minetest.register_node(":xpanes:"..name, def)
 
@@ -149,20 +151,13 @@ minetest.register_on_dignode(update_nearby)
 
 xpanes.register_pane("pane", {
 	description = "Glass Pane",
-	tiles = {"xpanes_space.png"},
-	drawtype = "airlike",
 	paramtype = "light",
 	sunlight_propagates = true,
-	walkable = false,
-	pointable = false,
-	diggable = false,
-	buildable_to = true,
-	air_equivalent = true,
-	textures = {"default_glass.png","xpanes_pane_half.png","xpanes_white.png"},
+	textures = {"default_glass.png", "xpanes_pane_half.png", "xpanes_white.png"},
 	inventory_image = "default_glass.png",
 	wield_image = "default_glass.png",
 	sounds = default.node_sound_glass_defaults(),
-	groups = {snappy=2, cracky=3, oddly_breakable_by_hand=3, pane=1},
+	groups = {snappy=2, cracky=3, oddly_breakable_by_hand=3},
 	recipe = {
 		{'default:glass', 'default:glass', 'default:glass'},
 		{'default:glass', 'default:glass', 'default:glass'}
@@ -170,20 +165,13 @@ xpanes.register_pane("pane", {
 })
 
 xpanes.register_pane("bar", {
-	description = "Iron bar",
-	tiles = {"xpanes_space.png"},
-	drawtype = "airlike",
+	description = "Iron Bar",
 	paramtype = "light",
 	sunlight_propagates = true,
-	walkable = false,
-	pointable = false,
-	diggable = false,
-	buildable_to = true,
-	air_equivalent = true,
-	textures = {"xpanes_bar.png","xpanes_bar.png","xpanes_space.png"},
+	textures = {"xpanes_bar.png", "xpanes_bar.png", "xpanes_space.png"},
 	inventory_image = "xpanes_bar.png",
 	wield_image = "xpanes_bar.png",
-	groups = {snappy=2, cracky=3, oddly_breakable_by_hand=3, pane=1},
+	groups = {snappy=2, cracky=3, oddly_breakable_by_hand=3},
 	sounds = default.node_sound_stone_defaults(),
 	recipe = {
 		{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
